@@ -1,0 +1,73 @@
+<h2 class="mb-5">Registro de empleados</h2>
+
+<div *ngIf="eliminar" class="alert alert-danger" role="alert">
+
+  {{employee}}
+  <button class="btn btn-danger" (click)="confirmAlert()">
+    confirmar
+  </button>
+
+  <button class="btn btn-danger" (click)="confirmAlert()">
+    cancelar
+  </button>
+</div>
+<div class="d-flex justify-content-between mb-3">
+  <!-- Campo de búsqueda por cédula -->
+  <div class="me-2 flex-grow-1">
+    <input
+    type="text"
+    class="form-control"
+    placeholder="Buscar por cédula"
+    [(ngModel)]="searchCedula"
+    (input)="filterByCedula()"
+    />
+  </div>
+
+  <div class="text-end">
+    <button class="btn btn-primary" routerLink="/new">
+      Nuevo empleado
+    </button>
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>idEmpleado</th>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Cedula</th>
+      <th>Direccion</th>
+      <th>Telefono</th>
+      <th>Foto</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor= "let employee of filteredEmployees">
+        <td>{{employee.id}}</td>
+        <td>{{employee.name}}</td>
+        <td>{{employee.surname}}</td>
+        <td>{{employee.cedula }}</td>
+        <td>{{employee.address}}</td>
+        <td>{{employee.telephone}}</td>
+        <td>
+          <img *ngIf="employee.photo" [src]="employee.photo" alt="Foto del empleado" width="50">
+        </td>
+
+        <td class=" text-end">
+          <button class="btn btn-primary" [routerLink]="[employee.id+edit]">
+            Editar
+          </button>
+
+          <button class="btn btn-danger" (click)="openAlert(employee.name, employee.id)">
+            Eliminar
+          </button>
+        </td>
+    </tr>
+    <tr *ngIf="filteredEmployees.length === 0">
+      <td colspan="8" class="text-center">No se encontraron empleados.</td> <!-- Mensaje cuando no hay resultados -->
+    </tr>
+
+  </tbody>
+</table>
